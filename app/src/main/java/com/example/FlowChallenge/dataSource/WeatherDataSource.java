@@ -16,9 +16,9 @@ public class WeatherDataSource {
     public static final String API_KEY = "79e508708d93759b5d5adbabca775142";
     public static final String METRIC = "metric";
 
-    private MutableLiveData<WeatherForecastResult> data;
-    private MutableLiveData<WeatherTodayResult> dataToday;
-    private MutableLiveData<Boolean> error;
+    public MutableLiveData<WeatherForecastResult> data;
+    public MutableLiveData<WeatherTodayResult> dataToday;
+    public MutableLiveData<Boolean> error;
     public MutableLiveData<Boolean> loading;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RetrofitInstance retrofitInstance = RetrofitInstance.getInstanceWeather();
