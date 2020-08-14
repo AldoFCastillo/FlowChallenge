@@ -1,9 +1,13 @@
 package com.example.FlowChallenge.utils;
 
 import com.example.FlowChallenge.R;
+import com.example.FlowChallenge.model.Daily;
 import com.example.FlowChallenge.model.WeatherResult;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class WeatherUtils {
 
@@ -30,6 +34,19 @@ public class WeatherUtils {
 
         return day;
     }
+
+
+    public static List<WeatherResult> createPagerCities() {
+        List<String> citiesList = Arrays.asList("New York", "Paris", "Rio de Janeiro", "Berlin", "Madrid", "Ciudad Actual");
+        List<WeatherResult> resultList = new ArrayList<>();
+        for (String cityString : citiesList) {
+            WeatherResult weatherResult = new WeatherResult();
+            weatherResult.setCityName(cityString);
+            resultList.add(weatherResult);
+        }
+        return resultList;
+    }
+
 
     public static WeatherResult getLatAndLon(WeatherResult data) {
 
@@ -78,6 +95,14 @@ public class WeatherUtils {
                 return R.drawable.ic_city;
         }
 
+    }
+
+    public static List<Daily> getNextFiveDays(WeatherResult weatherResult) {
+        List<Daily> dailyList = weatherResult.getDaily();
+        dailyList.remove(0);
+        dailyList.remove(6);
+        dailyList.remove(5);
+        return dailyList;
     }
 
 

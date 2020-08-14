@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.FlowChallenge.R;
 import com.example.FlowChallenge.model.WeatherResult;
 import com.example.FlowChallenge.utils.HorizontalFlipTransformation;
+import com.example.FlowChallenge.utils.WeatherUtils;
 import com.example.FlowChallenge.view.adapter.ViewPagerAdapter;
 import com.example.FlowChallenge.viewModel.IPViewModel;
 import com.example.FlowChallenge.viewModel.IpapiViewModel;
@@ -29,8 +30,6 @@ import com.facebook.stetho.Stetho;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -83,8 +82,7 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
         ipViewModel = new ViewModelProvider(this).get(IPViewModel.class);
 
         getIP();
-        initOtherCities();
-
+        setViewPager(WeatherUtils.createPagerCities());
 
         return view;
     }
@@ -109,10 +107,10 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
 
     private void getCurrentLocation(String ip) {
         ipapiViewModel.getIpapiResult(ip);
-        currentLocObserver();
+        currentLocationObserver();
     }
 
-    private void currentLocObserver() {
+    private void currentLocationObserver() {
         ipapiViewModel.data.observe(getViewLifecycleOwner(), ipapiResult -> {
             if (ipapiResult != null) {
                 city = ipapiResult.getCity();
@@ -163,26 +161,16 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
         url = "https://openweathermap.org/img/wn/" + url + "@2x.png";
         imageViewWeather.setVisibility(View.VISIBLE);
         Glide.with(this).load(url).into(imageViewWeather);
-        chooseCurrentCity(data);
+        tapCurrentCity(data);
     }
 
-    private void chooseCurrentCity(WeatherResult data) {
+    private void tapCurrentCity(WeatherResult data) {
         cardViewMain.setOnClickListener(v -> {
             data.setCityName(city);
             listener.mainFragmentListener(data);
         });
     }
 
-    private void initOtherCities() {
-        List<String> citiesList = Arrays.asList("New York", "Paris", "Rio de Janeiro", "Berlin", "Madrid", "Ciudad Actual");
-        List<WeatherResult> resultList = new ArrayList<>();
-        for (String cityString : citiesList) {
-            WeatherResult weatherResult = new WeatherResult();
-            weatherResult.setCityName(cityString);
-            resultList.add(weatherResult);
-        }
-        setViewPager(resultList);
-    }
 
     private void setViewPager(List<WeatherResult> resultList) {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(resultList, this);
@@ -196,7 +184,6 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
 
     @Override
     public void pagerListener(WeatherResult weatherResult) {
-        //listener.mainFragmentListener(weatherResult);
         setEmptyCard();
         progressBar.setVisibility(View.VISIBLE);
         if (weatherResult.getCityName().equals("Ciudad Actual")) {

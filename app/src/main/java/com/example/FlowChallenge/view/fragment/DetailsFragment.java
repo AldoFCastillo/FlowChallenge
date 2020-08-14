@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.FlowChallenge.R;
 import com.example.FlowChallenge.model.Daily;
 import com.example.FlowChallenge.model.WeatherResult;
+import com.example.FlowChallenge.utils.WeatherUtils;
 import com.example.FlowChallenge.view.adapter.RecyclerAdapter;
 import com.example.FlowChallenge.viewModel.WeatherViewModel;
 
@@ -91,7 +92,8 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
         cityName = weatherResult.getCityName();
 
         setWeatherResults();
-        getNextFiveDays();
+        initRecyclerView(WeatherUtils.getNextFiveDays(weatherResult));
+
 
 
         return view;
@@ -104,7 +106,7 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
         String city = cityName;
         textViewCity.setText(city);
         textViewTodayDetails.setVisibility(View.VISIBLE);
-        String temp = "Temperatura: " + getTempFormat(weatherResult.getCurrent().getTemp());
+        String temp = "Temperatura: " + WeatherUtils.getTempFormat(weatherResult.getCurrent().getTemp());
         textViewTempDetails.setText(temp);
         String hum = "Humedad: " + dailyToday.getHumidity() + "%";
         textViewHumDetails.setText(hum);
@@ -113,27 +115,14 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
         String url = dailyToday.getWeather().get(0).getIcon();
         url = "https://openweathermap.org/img/wn/" + url + "@2x.png";
         Glide.with(this).load(url).into(imageViewWeather);
-        String sens = "Sensación Térmica: " + getTempFormat(weatherResult.getCurrent().getFeelsLike());
+        String sens = "Sensación Térmica: " + WeatherUtils.getTempFormat(weatherResult.getCurrent().getFeelsLike());
         textViewSens.setText(sens);
-        String max = "Máxima: " + getTempFormat(dailyToday.getTemp().getMax());
+        String max = "Máxima: " + WeatherUtils.getTempFormat(dailyToday.getTemp().getMax());
         textViewMax.setText(max);
-        String min = "Mínima: " + getTempFormat(dailyToday.getTemp().getMin());
+        String min = "Mínima: " + WeatherUtils.getTempFormat(dailyToday.getTemp().getMin());
         textViewMin.setText(min);
     }
 
-    private String getTempFormat(String stringTemp) {
-        double temp = Double.parseDouble(stringTemp);
-        return Math.round(temp) + "°C";
-    }
-
-
-    private void getNextFiveDays() {
-        List<Daily> dailyList = weatherResult.getDaily();
-        dailyList.remove(0);
-        dailyList.remove(6);
-        dailyList.remove(5);
-        initRecyclerView(dailyList);
-    }
 
 
     public void initRecyclerView(List<Daily> list) {

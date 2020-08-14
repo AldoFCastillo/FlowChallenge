@@ -15,7 +15,6 @@ import com.example.FlowChallenge.model.Daily;
 import com.example.FlowChallenge.model.WeatherResult;
 import com.example.FlowChallenge.utils.WeatherUtils;
 
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,8 +41,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Daily daily = weatherList.get(position);
-        RecyclerViewHolder RecyclerViewHolder = (RecyclerViewHolder) holder;
-        RecyclerViewHolder.bind(daily);
+        RecyclerViewHolder recyclerViewHolder = (RecyclerViewHolder) holder;
+        recyclerViewHolder.bind(daily);
     }
 
     @Override
