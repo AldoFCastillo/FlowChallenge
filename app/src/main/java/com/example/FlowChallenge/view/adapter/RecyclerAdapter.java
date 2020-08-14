@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.FlowChallenge.R;
-import com.example.FlowChallenge.model.WeatherForecastResult;
+import com.example.FlowChallenge.model.Daily;
+import com.example.FlowChallenge.model.WeatherResult;
 
 import java.util.Calendar;
 import java.util.List;
@@ -21,10 +22,10 @@ import butterknife.ButterKnife;
 
 public class RecyclerAdapter extends RecyclerView.Adapter {
 
-    private List<com.example.FlowChallenge.model.List> weatherList;
+    private List<Daily> weatherList;
     private listener listener;
 
-    public RecyclerAdapter(List<com.example.FlowChallenge.model.List> weatherList, listener listener) {
+    public RecyclerAdapter(List<Daily> weatherList, listener listener) {
         this.weatherList = weatherList;
         this.listener = listener;
     }
@@ -39,9 +40,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        com.example.FlowChallenge.model.List list = weatherList.get(position);
+        Daily daily = weatherList.get(position);
         RecyclerViewHolder RecyclerViewHolder = (RecyclerViewHolder) holder;
-        RecyclerViewHolder.bind(list);
+        RecyclerViewHolder.bind(daily);
     }
 
     @Override
@@ -69,12 +70,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
             });
         }
 
-        public void bind(com.example.FlowChallenge.model.List data) {
+        public void bind(Daily data) {
             textViewDayRecyclerCell.setText(getDay());
             String url = data.getWeather().get(0).getIcon();
             url = "https://openweathermap.org/img/wn/" + url + "@2x.png";
             Glide.with(itemView).load(url).into(imageViewWeather);
-            textViewTempRecCell.setText(getTempFormat(data.getMain().getTempMax()));
+            textViewTempRecCell.setText(getTempFormat(data.getTemp().getMax()));
         }
 
         private String getTempFormat(String stringTemp) {
@@ -98,48 +99,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
                 if (num == 7) day = "Sabado";
             }
 
-           /* switch (num) {
-                case 8:
-                    num = 1;
-                    break;
-                case 9:
-                    num = 2;
-                    break;
-                case 10:
-                    num = 3;
-                    break;
-                case 11:
-                    num = 4;
-                    break;
-            }
-            switch (num) {
-                case 1:
-                    day = "Sunday";
-                    break;
-                case 2:
-                    day = "Monday";
-                    break;
-                case 3:
-                    day = "Tuesday";
-                    break;
-                case 4:
-                    day = "Wednesday";
-                    break;
-                case 5:
-                    day = "Thursday";
-                    break;
-                case 6:
-                    day = "Friday";
-                    break;
-                case 7:
-                    day = "Saturday";
-                    break;
-            }*/
             return day;
         }
     }
 
     public interface listener {
-        void recyclerListener(WeatherForecastResult weatherResult);
+        void recyclerListener(WeatherResult weatherResult);
     }
 }

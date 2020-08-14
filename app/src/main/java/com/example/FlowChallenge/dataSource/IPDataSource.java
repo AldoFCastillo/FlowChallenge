@@ -36,6 +36,7 @@ public class IPDataSource {
                         loading.setValue(false);
                         error.setValue(false);
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         loading.setValue(false);
@@ -44,14 +45,16 @@ public class IPDataSource {
                 }));
     }
 
-    public MutableLiveData<IpAddress> refreshGetIP(){
+    public MutableLiveData<IpAddress> refreshGetIP() {
         getIP();
         return data;
     }
-    public MutableLiveData<Boolean> getLoading(){
+
+    public MutableLiveData<Boolean> getLoading() {
         return loading;
     }
-    public MutableLiveData<Boolean> getError(){
+
+    public MutableLiveData<Boolean> getError() {
         return error;
     }
 }

@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.example.FlowChallenge.R;
 
-import com.example.FlowChallenge.model.WeatherTodayResult;
+import com.example.FlowChallenge.model.WeatherResult;
 import com.example.FlowChallenge.view.fragment.DetailsFragment;
 import com.example.FlowChallenge.view.fragment.MainFragment;
 
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.list
 
     private long backPressedTime;
     private Toast backToast;
+    private MainFragment mainFragment = new MainFragment();
 
 
     @Override
@@ -29,7 +30,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.list
         setContentView(R.layout.activity_main);
         Stetho.initializeWithDefaults(this);
 
-        setFragment(new MainFragment());
+
+        if (savedInstanceState == null) setFragment(mainFragment);
     }
 
 
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.list
 
 
     @Override
-    public void mainFragmentListener(WeatherTodayResult weatherResult) {
+    public void mainFragmentListener(WeatherResult weatherResult) {
         DetailsFragment detailsFragment = DetailsFragment.newInstance(weatherResult);
         setFragment(detailsFragment);
 
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.list
         } else {
             backToast = Toast.makeText(getBaseContext(), "Presiona atras nuevamente para salir", Toast.LENGTH_SHORT);
             backToast.show();
-            setFragment(new MainFragment());
+            setFragment(mainFragment);
 
         }
         backPressedTime = System.currentTimeMillis();

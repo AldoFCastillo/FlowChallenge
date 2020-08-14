@@ -65,7 +65,4 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
     testImplementation "android.arch.core:core-testing:1.1.1"
 
-
-    implementation 'com.github.seventhmoon:ipapi-retrofit:1.5.0'
-
 }

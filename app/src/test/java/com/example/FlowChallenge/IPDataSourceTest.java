@@ -59,9 +59,6 @@ public class IPDataSourceTest {
         Assert.assertEquals(true, ipDataSource.error.getValue());
     }
 
-    //Tests de logica de negocio
-
-    // Se ejecuta antes de todos los single test
     public void setUpRxSchedulers() {
         Scheduler immediate = new Scheduler() {
             @Override

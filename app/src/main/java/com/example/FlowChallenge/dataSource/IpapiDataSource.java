@@ -23,18 +23,19 @@ public class IpapiDataSource {
     public IpapiDataSource() {
     }
 
-    private void getIpapiResult(String ip){
+    private void getIpapiResult(String ip) {
         data = new MutableLiveData<>();
         error = new MutableLiveData<>();
         compositeDisposable.add(retrofitInstance.getIpapiService(ip, IPAPI_KEY)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<IpapiResult>(){
+                .subscribeWith(new DisposableSingleObserver<IpapiResult>() {
                     @Override
                     public void onSuccess(IpapiResult value) {
                         data.setValue(value);
                         error.setValue(false);
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         error.setValue(true);
@@ -45,15 +46,14 @@ public class IpapiDataSource {
 
     }
 
-    public MutableLiveData<IpapiResult> refreshGetIpapiResult(String ip){
+    public MutableLiveData<IpapiResult> refreshGetIpapiResult(String ip) {
         getIpapiResult(ip);
         return data;
     }
 
-    public MutableLiveData<Boolean> getError(){
+    public MutableLiveData<Boolean> getError() {
         return error;
     }
-
 
 
 }

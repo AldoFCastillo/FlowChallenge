@@ -2,10 +2,8 @@ package com.example.FlowChallenge;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
-import com.example.FlowChallenge.dataSource.IpapiDataSource;
 import com.example.FlowChallenge.dataSource.WeatherDataSource;
-import com.example.FlowChallenge.model.IpapiResult;
-import com.example.FlowChallenge.model.WeatherTodayResult;
+import com.example.FlowChallenge.model.WeatherResult;
 import com.example.FlowChallenge.service.RetrofitInstance;
 
 import org.junit.Assert;
@@ -33,7 +31,7 @@ public class WeatherDataSourceTest {
 
     @InjectMocks
     public WeatherDataSource weatherDataSource = new WeatherDataSource();
-    private Single<WeatherTodayResult> todayResultSingleTest;
+    private Single<WeatherResult> weatherResultSingleTest;
 
     @Before
     public void setup() {
@@ -43,14 +41,16 @@ public class WeatherDataSourceTest {
 
     @Test
     public void testSuccess() {
-        WeatherTodayResult weatherTodayResult = new WeatherTodayResult();
-        todayResultSingleTest = Single.just(weatherTodayResult);
+        String lat = "48.8032";
+        String lon = "2.3511";
+        WeatherResult weatherResult = new WeatherResult();
+        weatherResultSingleTest = Single.just(weatherResult);
         Mockito.when(retrofitInstance
-                .getApiWeatherTodayService("London", WeatherDataSource.METRIC, WeatherDataSource.API_KEY))
-                .thenReturn(todayResultSingleTest);
+                .getApiWeatherService(lat, lon, WeatherDataSource.METRIC, WeatherDataSource.API_KEY))
+                .thenReturn(weatherResultSingleTest);
 
-        weatherDataSource.refreshGetTodayResult("London");
-        Assert.assertEquals(weatherTodayResult, weatherDataSource.dataToday.getValue());
+        weatherDataSource.refreshGetWeatherResult(lat, lon);
+        Assert.assertEquals(weatherResult, weatherDataSource.data.getValue());
         Assert.assertEquals(false, weatherDataSource.error.getValue());
         Assert.assertEquals(false, weatherDataSource.loading.getValue());
 
@@ -58,11 +58,11 @@ public class WeatherDataSourceTest {
 
     @Test
     public void testError() {
-        todayResultSingleTest = Single.error(Throwable::new);
+        weatherResultSingleTest = Single.error(Throwable::new);
         Mockito.when(retrofitInstance
-                .getApiWeatherTodayService("0", WeatherDataSource.METRIC, WeatherDataSource.API_KEY))
-                .thenReturn(todayResultSingleTest);
-        weatherDataSource.refreshGetTodayResult("0");
+                .getApiWeatherService("0","ñ", WeatherDataSource.METRIC, WeatherDataSource.API_KEY))
+                .thenReturn(weatherResultSingleTest);
+        weatherDataSource.refreshGetWeatherResult("0", "ñ");
         Assert.assertEquals(true, weatherDataSource.error.getValue());
         Assert.assertEquals(false, weatherDataSource.loading.getValue());
     }

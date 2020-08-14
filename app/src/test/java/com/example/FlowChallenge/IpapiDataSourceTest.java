@@ -40,19 +40,19 @@ public class IpapiDataSourceTest {
     }
 
     @Test
-    public void testSuccess(){
+    public void testSuccess() {
         IpapiResult ipapiResult = new IpapiResult();
         ipapiResultSingleTest = Single.just(ipapiResult);
-        Mockito.when(retrofitInstance.getIpapiService("200.126.156.147",IpapiDataSource.IPAPI_KEY)).thenReturn(ipapiResultSingleTest);
+        Mockito.when(retrofitInstance.getIpapiService("200.126.156.147", IpapiDataSource.IPAPI_KEY)).thenReturn(ipapiResultSingleTest);
         ipapiDataSource.refreshGetIpapiResult("200.126.156.147");
         Assert.assertEquals(ipapiResult, ipapiDataSource.data.getValue());
         Assert.assertEquals(false, ipapiDataSource.error.getValue());
     }
 
     @Test
-    public void testError(){
+    public void testError() {
         ipapiResultSingleTest = Single.error(Throwable::new);
-        Mockito.when(retrofitInstance.getIpapiService("232",IpapiDataSource.IPAPI_KEY)).thenReturn(ipapiResultSingleTest);
+        Mockito.when(retrofitInstance.getIpapiService("232", IpapiDataSource.IPAPI_KEY)).thenReturn(ipapiResultSingleTest);
         ipapiDataSource.refreshGetIpapiResult("232");
         Assert.assertEquals(true, ipapiDataSource.error.getValue());
 
@@ -64,7 +64,7 @@ public class IpapiDataSourceTest {
             public Worker createWorker() {
                 return new ExecutorScheduler.ExecutorWorker(Runnable::run);
             }
-        } ;
+        };
 
         RxJavaPlugins.setInitIoSchedulerHandler(schedulerCallable -> immediate);
         RxJavaPlugins.setInitComputationSchedulerHandler(scheduler -> immediate);

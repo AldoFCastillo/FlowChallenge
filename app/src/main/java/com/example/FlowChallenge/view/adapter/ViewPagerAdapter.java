@@ -11,7 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.FlowChallenge.R;
-import com.example.FlowChallenge.model.WeatherTodayResult;
+import com.example.FlowChallenge.model.WeatherResult;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ import butterknife.ButterKnife;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter {
 
-    private List<WeatherTodayResult> weatherList;
+    private List<WeatherResult> weatherList;
     private listener listener;
 
-    public ViewPagerAdapter(List<WeatherTodayResult> weatherList, listener listener) {
+    public ViewPagerAdapter(List<WeatherResult> weatherList, listener listener) {
         this.weatherList = weatherList;
         this.listener = listener;
     }
@@ -38,7 +38,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        WeatherTodayResult weatherResult = weatherList.get(position);
+        WeatherResult weatherResult = weatherList.get(position);
         ViewPagerViewHolder viewPagerViewHolder = (ViewPagerViewHolder) holder;
         viewPagerViewHolder.bind(weatherResult);
     }
@@ -62,12 +62,13 @@ public class ViewPagerAdapter extends RecyclerView.Adapter {
             itemView.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
             itemView.setOnClickListener(v -> {
-                listener.pagerListener(weatherList.get(getAdapterPosition()));
+                WeatherResult data = weatherList.get(getAdapterPosition());
+                listener.pagerListener(getLatAndLon(data));
             });
         }
 
-        public void bind(WeatherTodayResult data) {
-            String city = data.getName();
+        public void bind(WeatherResult data) {
+            String city = data.getCityName();
             textViewCityCell.setText(city);
 
             switch (city) {
@@ -91,8 +92,36 @@ public class ViewPagerAdapter extends RecyclerView.Adapter {
         }
     }
 
+    private WeatherResult getLatAndLon(WeatherResult data) {
+
+        switch (data.getCityName()) {
+            case "New York":
+                data.setLat("40.6643");
+                data.setLon("-73.9385");
+                break;
+            case "Paris":
+                data.setLat("48.8032");
+                data.setLon("2.3511");
+                break;
+            case "Rio de Janeiro":
+                data.setLat("-22.9035");
+                data.setLon("-43.2096");
+                break;
+            case "Berlin":
+                data.setLat("52.52437");
+                data.setLon("13.41053");
+                break;
+            case "Madrid":
+                data.setLat("40.4167");
+                data.setLon("-3.70325");
+                break;
+        }
+
+        return data;
+    }
+
     public interface listener {
-        void pagerListener(WeatherTodayResult weatherResult);
+        void pagerListener(WeatherResult weatherResult);
     }
 
 }

@@ -2,8 +2,7 @@ package com.example.FlowChallenge.service;
 
 import com.example.FlowChallenge.model.IpAddress;
 import com.example.FlowChallenge.model.IpapiResult;
-import com.example.FlowChallenge.model.WeatherForecastResult;
-import com.example.FlowChallenge.model.WeatherTodayResult;
+import com.example.FlowChallenge.model.WeatherResult;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import io.reactivex.Single;
@@ -60,12 +59,8 @@ public class RetrofitInstance {
     }
 
 
-    public Single<WeatherTodayResult> getApiWeatherTodayService(String city, String unit, String key) {
-        return retrofit.create(ApiWeatherService.class).getTodayResult(city, unit, key);
-    }
-
-    public Single<WeatherForecastResult> getApiWeatherForecastService(String city, String unit, String key) {
-        return retrofit.create(ApiWeatherService.class).getForecastResult(city, unit, key);
+    public Single<WeatherResult> getApiWeatherService(String lat, String lon, String unit, String key) {
+        return retrofit.create(ApiWeatherService.class).getWeatherResult(lat, lon, unit, key);
     }
 
     public Single<IpapiResult> getIpapiService(String ip, String key) {

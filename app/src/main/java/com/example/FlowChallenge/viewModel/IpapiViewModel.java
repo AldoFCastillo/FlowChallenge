@@ -15,7 +15,6 @@ public class IpapiViewModel extends ViewModel {
     private IpapiDataSource ipapiDataSource = new IpapiDataSource();
 
 
-
     public void getIpapiResult(String ip) {
         data = ipapiDataSource.refreshGetIpapiResult(ip);
         error = ipapiDataSource.getError();

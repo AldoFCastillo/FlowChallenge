@@ -17,12 +17,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.FlowChallenge.R;
-import com.example.FlowChallenge.model.WeatherForecastResult;
-import com.example.FlowChallenge.model.WeatherTodayResult;
+import com.example.FlowChallenge.model.Daily;
+import com.example.FlowChallenge.model.WeatherResult;
 import com.example.FlowChallenge.view.adapter.RecyclerAdapter;
 import com.example.FlowChallenge.viewModel.WeatherViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,8 +32,8 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
     public static final String KEY_RESULT = "result";
 
     private WeatherViewModel weatherViewModel;
-    private WeatherTodayResult weatherResultToday;
-    private WeatherForecastResult weatherResultForecast;
+    private WeatherResult weatherResult;
+    private String cityName;
 
     @BindView(R.id.textViewCityDetails)
     TextView textViewCity;
@@ -65,7 +64,7 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
     }
 
 
-    public static DetailsFragment newInstance(WeatherTodayResult result) {
+    public static DetailsFragment newInstance(WeatherResult result) {
         DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_RESULT, result);
@@ -77,7 +76,7 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            weatherResultToday = (WeatherTodayResult) getArguments().getSerializable(KEY_RESULT);
+            weatherResult = (WeatherResult) getArguments().getSerializable(KEY_RESULT);
         }
     }
 
@@ -89,50 +88,32 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
 
         weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
 
-        getForecastWeather(weatherResultToday.getName());
+        String lat = weatherResult.getLat();
+        String lon = weatherResult.getLat();
+        cityName = weatherResult.getCityName();
 
-        if (weatherResultToday.getClouds() != null) {
+
+        if (weatherResult.getDaily() != null) {
             setWeatherResults();
+            getNextFiveDays();
         } else {
-            getWeather(weatherResultToday.getName());
+            getWeather(lat, lon);
         }
 
         return view;
     }
 
-    private void getWeather(String city) {
-        weatherViewModel.getWeatherTodayResult(city);
-        weatherTodayObserver();
+    private void getWeather(String lat, String lon) {
+        weatherViewModel.getWeatherResult(lat, lon);
+        weatherObserver();
     }
 
-    private void getForecastWeather(String city) {
-        weatherViewModel.getWeatherForecastResult(city);
-        weatherForecastObserver();
-    }
-
-    private void weatherForecastObserver() {
-        weatherViewModel.data.observe(getViewLifecycleOwner(), weatherForecastResult -> {
-            weatherResultForecast = weatherForecastResult;
-            convertListToDaily();
-        });
-        weatherViewModel.loading.observe(getViewLifecycleOwner(), loading -> {
-            if (!loading) {
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-        weatherViewModel.error.observe(getViewLifecycleOwner(), error -> {
-            if (error) {
-                Toast.makeText(getContext(), "ERROR WEATHER", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void weatherTodayObserver() {
-
-        weatherViewModel.dataToday.observe(getViewLifecycleOwner(), weatherResult -> {
+    private void weatherObserver() {
+        weatherViewModel.data.observe(getViewLifecycleOwner(), weatherResult -> {
             if (weatherResult != null) {
-                this.weatherResultToday = weatherResult;
+                this.weatherResult = weatherResult;
                 setWeatherResults();
+                getNextFiveDays();
             }
         });
         weatherViewModel.loading.observe(getViewLifecycleOwner(), loading -> {
@@ -148,43 +129,44 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
     }
 
     private void setWeatherResults() {
-
-        String city = weatherResultToday.getName();
+        progressBar.setVisibility(View.INVISIBLE);
+        Daily dailyToday = weatherResult.getDaily().get(0);
+        String city = cityName;
         textViewCity.setText(city);
         textViewTodayDetails.setVisibility(View.VISIBLE);
-        String temp = "Temperatura: "+getTempFormat(weatherResultToday.getMain().getTemp());
+        String temp = "Temperatura: " + getTempFormat(weatherResult.getCurrent().getTemp());
         textViewTempDetails.setText(temp);
-        String hum = "Humedad: "+weatherResultToday.getMain().getHumidity() + "%";
+        String hum = "Humedad: " + dailyToday.getHumidity() + "%";
         textViewHumDetails.setText(hum);
-        String res = weatherResultToday.getWeather().get(0).getDescription();
+        String res = dailyToday.getWeather().get(0).getDescription();
         textViewResumeDetails.setText(res);
-        String url = weatherResultToday.getWeather().get(0).getIcon();
+        String url = dailyToday.getWeather().get(0).getIcon();
         url = "https://openweathermap.org/img/wn/" + url + "@2x.png";
         Glide.with(this).load(url).into(imageViewWeather);
-        String sens = "Sensación Térmica: "+getTempFormat(weatherResultToday.getMain().getFeelsLike());
+        String sens = "Sensación Térmica: " + getTempFormat(weatherResult.getCurrent().getFeelsLike());
         textViewSens.setText(sens);
-        String max = "Máxima: "+getTempFormat(weatherResultToday.getMain().getTempMax());
+        String max = "Máxima: " + getTempFormat(dailyToday.getTemp().getMax());
         textViewMax.setText(max);
-        String min = "Mínima: "+getTempFormat(weatherResultToday.getMain().getTempMin());
+        String min = "Mínima: " + getTempFormat(dailyToday.getTemp().getMin());
         textViewMin.setText(min);
     }
 
-    private String getTempFormat(String stringTemp){
+    private String getTempFormat(String stringTemp) {
         double temp = Double.parseDouble(stringTemp);
         return Math.round(temp) + "°C";
     }
 
 
-    private void convertListToDaily() {
-        List<com.example.FlowChallenge.model.List> list = new ArrayList<>();
-        for (int i = 7; i < 41; i = i + 7) {
-            list.add(weatherResultForecast.getList().get(i));
-        }
-        initRecyclerView(list);
+    private void getNextFiveDays(){
+        List<Daily> dailyList = weatherResult.getDaily();
+        dailyList.remove(0);
+        dailyList.remove(6);
+        dailyList.remove(5);
+        initRecyclerView(dailyList);
     }
 
 
-    public void initRecyclerView(List<com.example.FlowChallenge.model.List> list) {
+    public void initRecyclerView(List<Daily> list) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -194,7 +176,7 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
     }
 
     @Override
-    public void recyclerListener(WeatherForecastResult weatherResult) {
+    public void recyclerListener(WeatherResult weatherResult) {
 
     }
 }

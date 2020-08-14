@@ -16,7 +16,7 @@ public class IPViewModel extends ViewModel {
     private IPDataSource ipDataSource = new IPDataSource();
 
 
-    public void getIP(){
+    public void getIP() {
         data = ipDataSource.refreshGetIP();
         loading = ipDataSource.getLoading();
         error = ipDataSource.getError();

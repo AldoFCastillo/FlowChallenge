@@ -10,5 +10,5 @@ import retrofit2.http.Query;
 public interface IpapiService {
 
     @GET("{ip}?")
-    Single<IpapiResult> getIpapiResult (@Path("ip") String ip, @Query("access_key") String access_key);
+    Single<IpapiResult> getIpapiResult(@Path("ip") String ip, @Query("access_key") String access_key);
 }
