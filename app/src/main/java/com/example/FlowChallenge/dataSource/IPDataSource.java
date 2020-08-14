@@ -12,9 +12,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class IPDataSource {
 
-    public MutableLiveData<IpAddress> data = new MutableLiveData<>();
-    public MutableLiveData<Boolean> loading = new MutableLiveData<>();
-    public MutableLiveData<Boolean> error = new MutableLiveData<>();
+    public MutableLiveData<IpAddress> data;
+    public MutableLiveData<Boolean> loading;
+    public MutableLiveData<Boolean> error;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RetrofitInstance retrofitInstance = RetrofitInstance.getInstanceIP();
 

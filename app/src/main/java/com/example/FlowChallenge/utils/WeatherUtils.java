@@ -11,10 +11,22 @@ import java.util.List;
 
 public class WeatherUtils {
 
+    /**
+     * En este metodo se obtiene el formato de temperatura en grados Celcius
+     * @param stringTemp
+     * @return
+     */
+
     public static String getTempFormat(String stringTemp) {
         double temp = Double.parseDouble(stringTemp);
         return Math.round(temp) + "°C";
     }
+
+    /**
+     * En este metodo se obtiene el dia en formato String
+     * @param adapterPosition
+     * @return
+     */
 
     public static String getDay(int adapterPosition) {
         Calendar calendario = Calendar.getInstance();
@@ -36,6 +48,11 @@ public class WeatherUtils {
     }
 
 
+    /**
+     * En este metodo se crean las ciudades seleccionables
+     * @return
+     */
+
     public static List<WeatherResult> createPagerCities() {
         List<String> citiesList = Arrays.asList("New York", "Paris", "Rio de Janeiro", "Berlin", "Madrid", "Ciudad Actual");
         List<WeatherResult> resultList = new ArrayList<>();
@@ -46,6 +63,12 @@ public class WeatherUtils {
         }
         return resultList;
     }
+
+    /**
+     * En este metodo se obtienen las coordenadas de las ciudades seleccionables
+     * @param data
+     * @return
+     */
 
 
     public static WeatherResult getLatAndLon(WeatherResult data) {
@@ -77,6 +100,12 @@ public class WeatherUtils {
         return data;
     }
 
+    /**
+     * En este metodo devuelve el icono que corresponde a la ciudad
+     * @param city
+     * @return
+     */
+
     public static int getIcon(String city) {
         switch (city) {
             case "New York":
@@ -96,6 +125,13 @@ public class WeatherUtils {
         }
 
     }
+
+    /**
+     * En este metodo se elimina el primer pronostico de la lista (clima actual) y los ultimos dos (sexto y septimo dia)
+     * para devolver la lista que de los 5 dias necesarios para armar el Recycler Adapter
+     * @param weatherResult
+     * @return
+     */
 
     public static List<Daily> getNextFiveDays(WeatherResult weatherResult) {
         List<Daily> dailyList = weatherResult.getDaily();

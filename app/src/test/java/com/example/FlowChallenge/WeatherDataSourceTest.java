@@ -60,9 +60,9 @@ public class WeatherDataSourceTest {
     public void testError() {
         weatherResultSingleTest = Single.error(Throwable::new);
         Mockito.when(retrofitInstance
-                .getApiWeatherService("0","ñ", WeatherDataSource.METRIC, WeatherDataSource.API_KEY))
+                .getApiWeatherService("","", WeatherDataSource.METRIC, WeatherDataSource.API_KEY))
                 .thenReturn(weatherResultSingleTest);
-        weatherDataSource.refreshGetWeatherResult("0", "ñ");
+        weatherDataSource.refreshGetWeatherResult("", "");
         Assert.assertEquals(true, weatherDataSource.error.getValue());
         Assert.assertEquals(false, weatherDataSource.loading.getValue());
     }

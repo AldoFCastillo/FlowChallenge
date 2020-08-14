@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.list
             super.onBackPressed();
 
         } else {
-            backToast = Toast.makeText(getBaseContext(), "Presiona atras nuevamente para salir", Toast.LENGTH_SHORT);
+            backToast = Toast.makeText(getBaseContext(), R.string.back_to_exit, Toast.LENGTH_SHORT);
             backToast.show();
             setFragment(mainFragment);
 

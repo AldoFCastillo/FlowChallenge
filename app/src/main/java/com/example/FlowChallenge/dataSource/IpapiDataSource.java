@@ -15,8 +15,8 @@ public class IpapiDataSource {
 
     public static final String IPAPI_KEY = "44aa76370f472d6ca71f7a91ec43a201";
 
-    public MutableLiveData<IpapiResult> data = new MutableLiveData<>();
-    public MutableLiveData<Boolean> error = new MutableLiveData<>();
+    public MutableLiveData<IpapiResult> data;
+    public MutableLiveData<Boolean> error;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RetrofitInstance retrofitInstance = RetrofitInstance.getInstanceIpapi();
 

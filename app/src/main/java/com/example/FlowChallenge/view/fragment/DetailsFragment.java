@@ -28,11 +28,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailsFragment extends Fragment implements RecyclerAdapter.listener {
+public class DetailsFragment extends Fragment {
 
     public static final String KEY_RESULT = "result";
 
-    private WeatherViewModel weatherViewModel;
     private WeatherResult weatherResult;
     private String cityName;
 
@@ -87,13 +86,11 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
         View view = inflater.inflate(R.layout.fragment_details, container, false);
         ButterKnife.bind(this, view);
 
-        weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
 
         cityName = weatherResult.getCityName();
 
         setWeatherResults();
         initRecyclerView(WeatherUtils.getNextFiveDays(weatherResult));
-
 
 
         return view;
@@ -106,20 +103,20 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
         String city = cityName;
         textViewCity.setText(city);
         textViewTodayDetails.setVisibility(View.VISIBLE);
-        String temp = "Temperatura: " + WeatherUtils.getTempFormat(weatherResult.getCurrent().getTemp());
+        String temp = getString(R.string.temperature)+" "+ WeatherUtils.getTempFormat(weatherResult.getCurrent().getTemp());
         textViewTempDetails.setText(temp);
-        String hum = "Humedad: " + dailyToday.getHumidity() + "%";
+        String hum = getString(R.string.hum)+" "+ dailyToday.getHumidity() + getString(R.string.percent);
         textViewHumDetails.setText(hum);
         String res = dailyToday.getWeather().get(0).getDescription();
         textViewResumeDetails.setText(res);
         String url = dailyToday.getWeather().get(0).getIcon();
-        url = "https://openweathermap.org/img/wn/" + url + "@2x.png";
+        url = getString(R.string.icon_url) + url + getString(R.string.icon_url_end);
         Glide.with(this).load(url).into(imageViewWeather);
-        String sens = "Sensación Térmica: " + WeatherUtils.getTempFormat(weatherResult.getCurrent().getFeelsLike());
+        String sens = getString(R.string.sens_t)+" " + WeatherUtils.getTempFormat(weatherResult.getCurrent().getFeelsLike());
         textViewSens.setText(sens);
-        String max = "Máxima: " + WeatherUtils.getTempFormat(dailyToday.getTemp().getMax());
+        String max = getString(R.string.max)+" " + WeatherUtils.getTempFormat(dailyToday.getTemp().getMax());
         textViewMax.setText(max);
-        String min = "Mínima: " + WeatherUtils.getTempFormat(dailyToday.getTemp().getMin());
+        String min = getString(R.string.min)+" " + WeatherUtils.getTempFormat(dailyToday.getTemp().getMin());
         textViewMin.setText(min);
     }
 
@@ -130,12 +127,9 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(10);
-        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(list, DetailsFragment.this);
+        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(list);
         recyclerView.setAdapter(recyclerAdapter);
     }
 
-    @Override
-    public void recyclerListener(WeatherResult weatherResult) {
 
-    }
 }

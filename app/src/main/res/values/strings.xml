@@ -5,4 +5,15 @@
     <string name="hoy">Hoy</string>
     <string name="otras_ciudades">Otras Ciudades</string>
     <string name="tap_here">toque aqui para ver el pronostico extendido</string>
+    <string name="back_to_exit">Presiona atras nuevamente para salir</string>
+    <string name="icon_url">https://openweathermap.org/img/wn/</string>
+    <string name="icon_url_end">\@2x.png</string>
+    <string name="celcius">°C</string>
+    <string name="actual_city">Ciudad Actual</string>
+    <string name="temperature">Temperatura:</string>
+    <string name="hum">Humedad:</string>
+    <string name="sens_t">Sensación Térmica:</string>
+    <string name="max">Máxima:</string>
+    <string name="min">Mínima:</string>
+    <string name="percent">%</string>
 </resources>

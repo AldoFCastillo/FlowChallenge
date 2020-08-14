@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.FlowChallenge.R;
 import com.example.FlowChallenge.model.Daily;
-import com.example.FlowChallenge.model.WeatherResult;
 import com.example.FlowChallenge.utils.WeatherUtils;
 
 import java.util.List;
@@ -20,37 +19,35 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecyclerAdapter extends RecyclerView.Adapter {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
 
     private List<Daily> weatherList;
-    private listener listener;
 
-    public RecyclerAdapter(List<Daily> weatherList, listener listener) {
+    public RecyclerAdapter(List<Daily> weatherList) {
         this.weatherList = weatherList;
-        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.recycler_cell, parent, false);
         return new RecyclerViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         Daily daily = weatherList.get(position);
-        RecyclerViewHolder recyclerViewHolder = (RecyclerViewHolder) holder;
-        recyclerViewHolder.bind(daily);
+        holder.bind(daily);
     }
+
 
     @Override
     public int getItemCount() {
         return weatherList.size();
     }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
 
         @BindView(R.id.textViewDayRecyclerCell)
@@ -64,10 +61,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-            itemView.setOnClickListener(v -> {
-                //////listener
-            });
         }
 
         public void bind(Daily data) {
@@ -81,7 +74,5 @@ public class RecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public interface listener {
-        void recyclerListener(WeatherResult weatherResult);
-    }
+
 }

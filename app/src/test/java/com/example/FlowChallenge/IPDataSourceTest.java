@@ -41,7 +41,7 @@ public class IPDataSourceTest {
 
     @Test
     public void testSuccess() {
-        IpAddress ipAddress = new IpAddress("HOLA");
+        IpAddress ipAddress = new IpAddress("");
         testSingleIP = Single.just(ipAddress);
         Mockito.when(retrofitInstance.getIPResult()).thenReturn(testSingleIP);
         ipDataSource.refreshGetIP();

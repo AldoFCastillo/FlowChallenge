@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainFragment extends Fragment implements ViewPagerAdapter.listener {
+
+    public static final String TAG ="Main Fragment: ";
 
     private WeatherViewModel weatherViewModel;
     private IpapiViewModel ipapiViewModel;
@@ -87,6 +90,11 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
         return view;
     }
 
+
+    /**
+     * En este metodo se consulta a la APi de ipify.org para obtener el IP
+     */
+
     private void getIP() {
         ipViewModel.getIP();
         IPObserver();
@@ -101,9 +109,14 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
         ipViewModel.error.observe(getViewLifecycleOwner(), error -> {
             if (error) {
                 Toast.makeText(getContext(), "Ocurrio un error obteniendo el IP", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Ocurrio un error obteniendo el IP");
             }
         });
     }
+
+    /**
+     * En este metodo se consulta a la APi de ipapi.com para obtener la ciudad actual, su latitud y longitud
+     */
 
     private void getCurrentLocation(String ip) {
         ipapiViewModel.getIpapiResult(ip);
@@ -121,10 +134,15 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
         });
         ipapiViewModel.error.observe(getViewLifecycleOwner(), error -> {
             if (error) {
-                Toast.makeText(getContext(), "ERROR IP-API", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "ERROR IP-API");
             }
         });
     }
+
+    /**
+     * En este metodo se consulta a la APi deopenweathermap.org para obtener el clima actual y pronostico de
+     * 5 dias mediante coordenadas
+     */
 
     private void getWeather(String lat, String lon) {
         weatherViewModel.getWeatherResult(lat, lon);
@@ -145,7 +163,8 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
         });
         weatherViewModel.error.observe(getViewLifecycleOwner(), error -> {
             if (error) {
-                Toast.makeText(getContext(), "ERROR WEATHER", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Ocurrio un error", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "ERROR WEATHER" );
             }
         });
     }
@@ -153,12 +172,12 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
     private void setWeatherResults(WeatherResult data) {
         textViewCity.setText(city);
         double temp = Double.parseDouble(data.getCurrent().getTemp());
-        String stringTemp = Math.round(temp) + "°C";
+        String stringTemp = Math.round(temp) + getString(R.string.celcius);
         textViewTempMain.setText(stringTemp);
         String res = data.getCurrent().getWeather().get(0).getDescription();
         textViewResumeMain.setText(res);
         String url = data.getCurrent().getWeather().get(0).getIcon();
-        url = "https://openweathermap.org/img/wn/" + url + "@2x.png";
+        url = getString(R.string.icon_url) + url + getString(R.string.icon_url_end);
         imageViewWeather.setVisibility(View.VISIBLE);
         Glide.with(this).load(url).into(imageViewWeather);
         tapCurrentCity(data);
@@ -186,7 +205,7 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
     public void pagerListener(WeatherResult weatherResult) {
         setEmptyCard();
         progressBar.setVisibility(View.VISIBLE);
-        if (weatherResult.getCityName().equals("Ciudad Actual")) {
+        if (weatherResult.getCityName().equals(getString(R.string.actual_city))) {
             getIP();
         } else {
             city = weatherResult.getCityName();

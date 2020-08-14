@@ -27,7 +27,6 @@ android {
 }
 
 def rxJavaVersion = '2.0.1'
-def daggerVersion = '2.28.3'
 def retrofitVersion = '2.9.0'
 def mockitoVersion = '2.11.0'
 

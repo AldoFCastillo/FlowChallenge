@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ViewPagerAdapter extends RecyclerView.Adapter {
+public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder> {
 
     private List<WeatherResult> weatherList;
     private listener listener;
@@ -32,18 +32,18 @@ public class ViewPagerAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewPagerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.viewpager_cell, parent, false);
         return new ViewPagerViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewPagerViewHolder holder, int position) {
         WeatherResult weatherResult = weatherList.get(position);
-        ViewPagerViewHolder viewPagerViewHolder = (ViewPagerViewHolder) holder;
-        viewPagerViewHolder.bind(weatherResult);
+        holder.bind(weatherResult);
     }
+
 
     @Override
     public int getItemCount() {
