@@ -10,12 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:background="#A88ADF"
         android:elevation="3dp"
         app:cardCornerRadius="15dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintCardMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#A88ADF"
@@ -25,10 +27,10 @@
                 android:id="@+id/textViewCityMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
                 android:layout_marginTop="5dp"
                 android:text=""
                 android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,9 +38,11 @@
                 android:id="@+id/textViewTempMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
                 android:text=""
                 android:textSize="50sp"
-                app:layout_constraintStart_toStartOf="@+id/textViewCityMain"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCityMain" />
 
 
@@ -49,8 +53,19 @@
                 android:layout_marginTop="10dp"
                 android:text=""
                 android:textSize="30sp"
-                app:layout_constraintStart_toStartOf="@+id/textViewCityMain"
+                app:layout_constraintStart_toStartOf="@+id/textViewTempMain"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTempMain" />
+
+            <TextView
+                android:id="@+id/textViewTapMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/tap_here"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewResumeMain" />
 
 
             <ImageView
@@ -58,23 +73,21 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="35dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
     </androidx.cardview.widget.CardView>
 
@@ -82,9 +95,9 @@
         android:id="@+id/cardViewMainOthers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="20dp"
         android:elevation="3dp"
-        app:cardCornerRadius="35dp"
+        app:cardCornerRadius="30dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintTop_toBottomOf="@id/cardViewMain">
 

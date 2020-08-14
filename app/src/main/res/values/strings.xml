@@ -4,4 +4,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hoy">Hoy</string>
     <string name="otras_ciudades">Otras Ciudades</string>
+    <string name="tap_here">toque aqui para ver el pronostico extendido</string>
 </resources>

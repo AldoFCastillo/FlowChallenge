@@ -87,6 +87,8 @@ public class ViewPagerAdapter extends RecyclerView.Adapter {
                 case "Madrid":
                     imageViewWeatherCell.setImageResource(R.drawable.ic_madrid);
                     break;
+                case "Ciudad Actual":
+                    imageViewWeatherCell.setImageResource(R.drawable.ic_city);
             }
 
         }
@@ -115,6 +117,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter {
                 data.setLat("40.4167");
                 data.setLon("-3.70325");
                 break;
+
         }
 
         return data;

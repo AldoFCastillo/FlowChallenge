@@ -161,6 +161,7 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
         textViewResumeMain.setText(res);
         String url = data.getCurrent().getWeather().get(0).getIcon();
         url = "https://openweathermap.org/img/wn/" + url + "@2x.png";
+        imageViewWeather.setVisibility(View.VISIBLE);
         Glide.with(this).load(url).into(imageViewWeather);
         chooseCurrentCity(data);
     }
@@ -173,7 +174,7 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
     }
 
     private void initOtherCities() {
-        List<String> citiesList = Arrays.asList("New York", "Paris", "Rio de Janeiro", "Berlin", "Madrid");
+        List<String> citiesList = Arrays.asList("New York", "Paris", "Rio de Janeiro", "Berlin", "Madrid", "Ciudad Actual");
         List<WeatherResult> resultList = new ArrayList<>();
         for (String cityString : citiesList) {
             WeatherResult weatherResult = new WeatherResult();
@@ -195,7 +196,23 @@ public class MainFragment extends Fragment implements ViewPagerAdapter.listener 
 
     @Override
     public void pagerListener(WeatherResult weatherResult) {
-        listener.mainFragmentListener(weatherResult);
+        //listener.mainFragmentListener(weatherResult);
+        setEmptyCard();
+        progressBar.setVisibility(View.VISIBLE);
+        if (weatherResult.getCityName().equals("Ciudad Actual")) {
+            getIP();
+        } else {
+            city = weatherResult.getCityName();
+            getWeather(weatherResult.getLat(), weatherResult.getLon());
+        }
+
+    }
+
+    private void setEmptyCard() {
+        textViewCity.setText("");
+        textViewTempMain.setText("");
+        textViewResumeMain.setText("");
+        imageViewWeather.setVisibility(View.INVISIBLE);
     }
 
     public interface listener {
