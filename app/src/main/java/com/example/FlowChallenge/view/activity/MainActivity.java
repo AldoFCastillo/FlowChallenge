@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.list
         setContentView(R.layout.activity_main);
         Stetho.initializeWithDefaults(this);
 
-
         if (savedInstanceState == null) setFragment(mainFragment);
     }
 

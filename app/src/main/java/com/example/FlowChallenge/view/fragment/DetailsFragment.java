@@ -88,45 +88,15 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
 
         weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
 
-        String lat = weatherResult.getLat();
-        String lon = weatherResult.getLat();
         cityName = weatherResult.getCityName();
 
+        setWeatherResults();
+        getNextFiveDays();
 
-        if (weatherResult.getDaily() != null) {
-            setWeatherResults();
-            getNextFiveDays();
-        } else {
-            getWeather(lat, lon);
-        }
 
         return view;
     }
 
-    private void getWeather(String lat, String lon) {
-        weatherViewModel.getWeatherResult(lat, lon);
-        weatherObserver();
-    }
-
-    private void weatherObserver() {
-        weatherViewModel.data.observe(getViewLifecycleOwner(), weatherResult -> {
-            if (weatherResult != null) {
-                this.weatherResult = weatherResult;
-                setWeatherResults();
-                getNextFiveDays();
-            }
-        });
-        weatherViewModel.loading.observe(getViewLifecycleOwner(), loading -> {
-            if (!loading) {
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-        weatherViewModel.error.observe(getViewLifecycleOwner(), error -> {
-            if (error) {
-                Toast.makeText(getContext(), "ERROR WEATHER", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     private void setWeatherResults() {
         progressBar.setVisibility(View.INVISIBLE);
@@ -157,7 +127,7 @@ public class DetailsFragment extends Fragment implements RecyclerAdapter.listene
     }
 
 
-    private void getNextFiveDays(){
+    private void getNextFiveDays() {
         List<Daily> dailyList = weatherResult.getDaily();
         dailyList.remove(0);
         dailyList.remove(6);
