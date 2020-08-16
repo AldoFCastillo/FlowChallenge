@@ -39,7 +39,7 @@ public class WeatherUtils {
             if (num == 2 || num == 9) day = "Lunes";
             if (num == 3 || num == 10) day = "Martes";
             if (num == 4 || num == 11) day = "Miercoles";
-            if (num == 5) day = "Jueves";
+            if (num == 5 || num == 12) day = "Jueves";
             if (num == 6) day = "Viernes";
             if (num == 7) day = "Sabado";
         }
